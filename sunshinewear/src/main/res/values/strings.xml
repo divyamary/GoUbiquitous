@@ -55,6 +55,10 @@
     <string name="color_red">Red</string>
     <string name="color_white">White</string>
 
+    <!-- Strings for formatting weather-related data -->
+    <!-- Temperature format [CHAR LIMIT=5 -->
+    <string name="format_temperature">%1.0f\u00B0</string>
+
     <string-array name="color_array">
         <item>@string/color_black</item>
         <item>@string/color_blue</item>

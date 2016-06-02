@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.android.sunshine.app;
 
 import android.graphics.Color;
@@ -61,10 +45,12 @@ public final class WatchFaceUtil {
             parseColor(COLOR_NAME_DEFAULT_AND_AMBIENT_DATE);
 
 
+    private WatchFaceUtil() {
+    }
+
     private static int parseColor(String colorName) {
         return Color.parseColor(colorName.toLowerCase());
     }
-
 
     public static int getArtResourceForWeatherCondition(int weatherId) {
         // Based on weather code data found at:
@@ -94,7 +80,4 @@ public final class WatchFaceUtil {
         }
         return -1;
     }
-
-
-    private WatchFaceUtil() { }
 }

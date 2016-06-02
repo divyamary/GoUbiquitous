@@ -74,6 +74,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
     private static final Typeface NORMAL_TYPEFACE =
             Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
 
+
     /**
      * Update rate in milliseconds for normal (not ambient and not mute) mode. We update twice
      * a second to blink the colons.
@@ -102,7 +103,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
         static final int NORMAL_ALPHA = 255;
 
         static final int MSG_UPDATE_TIME = 0;
-        private static final String FONT = "fonts/peace_sans.otf";
+        private static final String FONT = "fonts/Summit.ttf";
 
         /** How often {@link #mUpdateTimeHandler} ticks in milliseconds. */
         long mInteractiveUpdateRateMs = NORMAL_UPDATE_RATE_MS;
@@ -188,7 +189,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
         float mLineHeight;
         String mAmString;
         String mPmString;
-        String mTemp;
+        String mTempHigh;
         /*int mInteractiveBackgroundColor =
                 DigitalWatchFaceUtil.COLOR_VALUE_DEFAULT_AND_AMBIENT_BACKGROUND;*/
         int mInteractiveBackgroundColor = getResources().getColor(R.color.yellow);
@@ -214,6 +215,8 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
         private int mWeatherDrawable;
         private Bitmap mWeatherBitmap;
         Paint mWeatherPaint;
+        private String mTempLow;
+        private boolean isRound;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -226,7 +229,6 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
                     .build());
             //mGoogleApiClient.connect();
             Resources resources = DigitalWatchFaceService.this.getResources();
-            mYOffset = resources.getDimension(R.dimen.digital_y_offset);
             mLineHeight = resources.getDimension(R.dimen.digital_line_height);
             mAmString = resources.getString(R.string.digital_am);
             mPmString = resources.getString(R.string.digital_pm);
@@ -238,6 +240,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             mWeatherPaint = new Paint();
             mBackgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
             mDatePaint = createTextPaint(mInteractiveBackgroundColor, NORMAL_TYPEFACE);
+            //mDatePaint.setFakeBoldText(true);
             mHourPaint = createTextPaint(mInteractiveHourDigitsColor, BOLD_TYPEFACE);
             mMinutePaint = createTextPaint(mInteractiveMinuteDigitsColor, BOLD_TYPEFACE);
             //mSecondPaint = createTextPaint(mInteractiveSecondDigitsColor);
@@ -251,9 +254,10 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             //mSecondPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
             //mHourPaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
             //mMinutePaint.setShadowLayer(SHADOW_RADIUS, 0, 0, mWatchHandShadowColor);
-            mAmPmPaint = createTextPaint(mInteractiveMinuteDigitsColor, BOLD_TYPEFACE);
+            mAmPmPaint = createTextPaint(mInteractiveMinuteDigitsColor, NORMAL_TYPEFACE);
             mColonPaint = createTextPaint(resources.getColor(R.color.digital_colons));
             mTempPaint = createTextPaint(mInteractiveMinuteDigitsColor, NORMAL_TYPEFACE);
+            //mTempPaint.setFakeBoldText(true);
             mCalendar = Calendar.getInstance();
             mDate = new Date();
             initFormats();
@@ -336,9 +340,11 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
 
             // Load resources that have alternate values for round watches.
             Resources resources = DigitalWatchFaceService.this.getResources();
-            boolean isRound = insets.isRound();
+            isRound = insets.isRound();
             mXOffset = resources.getDimension(isRound
                     ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
+            mYOffset = resources.getDimension(isRound
+                    ? R.dimen.digital_y_offset_round : R.dimen.digital_y_offset);
             float hourSize = resources.getDimension(isRound
                     ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
             float minuteSize = resources.getDimension(isRound
@@ -527,6 +533,7 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             }
             String minuteString = formatTwoDigitNumber(mCalendar.get(Calendar.MINUTE));
             // Draw the hours.
+            float hourX= (mHourPaint.measureText(hourString))/2;
             canvas.drawText(hourString, bounds.centerX() - mHourPaint.measureText(hourString), mYOffset, mHourPaint);
             // Draw the minutes.
             canvas.drawText(minuteString, bounds.centerX(), mYOffset-mLineHeight, mMinutePaint);
@@ -562,17 +569,21 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             }
 
             float weatherSize = bounds.width() * 0.1F;
-            if(mWeatherDrawable>0) {
+            if(mWeatherBitmap!=null) {
                 /*mWeatherBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), mWeatherDrawable),
                         (int) (weatherSize), (int) (weatherSize), true);*/
-                mWeatherBitmap = BitmapFactory.decodeResource(getResources(), mWeatherDrawable);
-                canvas.drawBitmap(mWeatherBitmap,  bounds.centerX() - mWeatherBitmap.getWidth()/2,
-                        mYOffset + mLineHeight+10  , mWeatherPaint);
-            }
 
-            if(mTemp!=null && mTemp.length()>0) {
-                canvas.drawText(mTemp,  bounds.centerX() - mTempPaint.measureText(mTemp)/2,
-                        mYOffset + mLineHeight*3, mTempPaint);
+                canvas.drawBitmap(mWeatherBitmap,  bounds.centerX() - mWeatherBitmap.getWidth()/2,
+                        mYOffset +mWeatherBitmap.getHeight(), mWeatherPaint);
+
+            }
+            if(mTempHigh !=null && mTempHigh.length()>0) {
+                canvas.drawText(mTempHigh,  bounds.centerX() - (mWeatherBitmap.getWidth()+mTempPaint.measureText(mTempHigh)),
+                        mYOffset + mLineHeight*2, mTempPaint);
+            }
+            if(mTempLow !=null && mTempLow.length()>0) {
+                canvas.drawText(mTempLow,  bounds.centerX() + mWeatherBitmap.getWidth(),
+                        mYOffset + mLineHeight*2, mTempPaint);
             }
              /*
              * These calculations reflect the rotation in degrees per unit of time, e.g.,
@@ -596,9 +607,9 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
             //canvas.rotate(secondsRotation - minutesRotation, mCenterX, mCenterY);
             final RectF oval = new RectF();
             float innerX, innerY, outerX, outerY;
-            oval.set(20, 20, bounds.width()-20, bounds.height()-20);
+            oval.set(5, 5, bounds.width()-5, bounds.height()-5);
             if(secondsRotation!=0) {
-                canvas.drawArc(oval, -90, secondsRotation, false, mSecondPaint);
+                    canvas.drawArc(oval, -90, secondsRotation, false, mSecondPaint);
             }
             /*canvas.drawLine(
                     mCenterX,
@@ -694,11 +705,11 @@ public class DigitalWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void updateWeather(double high, double low, int weatherId) {
-
-            mTemp =  String.format(getString(R.string.format_temperature), high)+"/"+
-                    String.format(getString(R.string.format_temperature), low);;
+            mTempHigh =  String.format(getString(R.string.format_temperature), high);
+            mTempLow =  String.format(getString(R.string.format_temperature), low);
             mWeatherDrawable = DigitalWatchFaceUtil.getArtResourceForWeatherCondition(weatherId);
-            Log.d(TAG, "WeaR Weather:"+mTemp);
+            mWeatherBitmap = BitmapFactory.decodeResource(getResources(), mWeatherDrawable);
+            Log.d(TAG, "WeaR Weather:"+ mTempHigh);
         }
 
 

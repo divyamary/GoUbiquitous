@@ -14,18 +14,19 @@
  limitations under the License.
 -->
 <resources>
-    <dimen name="digital_text_size">40dp</dimen>
+    <dimen name="digital_text_size">70dp</dimen>
     <dimen name="digital_text_size_round">70dp</dimen>
     <dimen name="digital_date_text_size">16dp</dimen>
-    <dimen name="digital_min_size">30dp</dimen>
+    <dimen name="digital_min_size">35dp</dimen>
     <dimen name="digital_min_size_round">35dp</dimen>
-    <dimen name="digital_am_pm_size">25dp</dimen>
+    <dimen name="digital_am_pm_size">20dp</dimen>
     <dimen name="digital_am_pm_size_round">20dp</dimen>
     <dimen name="digital_x_offset">10dp</dimen>
     <dimen name="digital_x_offset_round">50dp</dimen>
-    <dimen name="digital_y_offset">100dp</dimen>
+    <dimen name="digital_y_offset">75dp</dimen>
+    <dimen name="digital_y_offset_round">100dp</dimen>
     <dimen name="digital_line_height">25dp</dimen>
     <dimen name="digital_config_color_picker_item_margin">32dp</dimen>
-    <dimen name="digital_temp_size_round">20dp</dimen>
-    <dimen name="digital_temp_size">15dp</dimen>
+    <dimen name="digital_temp_size_round">16dp</dimen>
+    <dimen name="digital_temp_size">16dp</dimen>
 </resources>

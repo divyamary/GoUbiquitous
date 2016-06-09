@@ -5,12 +5,15 @@ A watch face for the sunshine app which runs on an Android Wear Device. This pro
 This app works on both round and square face watches and displays the current time as well as the high and low temperatures of a particlar location.
 
 Circular Watch Face
+
 ![circular](https://cloud.githubusercontent.com/assets/7263244/15926160/10f9655e-2e58-11e6-83cb-e3e695520e0a.png)
 
 Square Watch Face
+
 ![square](https://cloud.githubusercontent.com/assets/7263244/15926162/11016380-2e58-11e6-9323-4127b5e73e33.png)
 
 Watch Face in Ambient Mode
+
 ![ambient](https://cloud.githubusercontent.com/assets/7263244/15926161/10fd37c4-2e58-11e6-864b-c9958f8979c1.png)
 
 -------

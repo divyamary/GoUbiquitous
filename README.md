@@ -1,8 +1,8 @@
 Go Ubiquitous
 ===================================
 
-A watch face for the sunshine app which runs on an Android Wear Device.
-
+A watch face for the sunshine app which runs on an Android Wear Device. This project is a part of the Android Developer Nanodegree.
+This app works on both round and square face watches and displays the current time as well as the high and low temperatures of a particlar location.
 
 License
 -------

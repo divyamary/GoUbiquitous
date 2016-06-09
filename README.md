@@ -4,6 +4,8 @@ Go Ubiquitous
 A watch face for the sunshine app which runs on an Android Wear Device. This project is a part of the Android Developer Nanodegree.
 This app works on both round and square face watches and displays the current time as well as the high and low temperatures of a particlar location.
 
+![Circular Watch face](https://cloud.githubusercontent.com/assets/7263244/15925956/ff5dd312-2e56-11e6-82e7-f92957950389.PNG)
+
 License
 -------
 Copyright 2015 The Android Open Source Project, Inc.
